@@ -78,8 +78,7 @@ namespace Hangman1
             // Set secretWord to uppercase and trim whitespace
             secretWord=secretWord.ToUpper().Trim();   
 
-            // Set amount of rounds to double length of word
-            int userRound=secretWord.Length * 2;
+            
 
             //create a char array from secret word
             char[] secretWordCharArray=secretWord.ToCharArray();
@@ -139,9 +138,7 @@ namespace Hangman1
                 Console.WriteLine(message);
                 // console out foundletters array
                 Console.WriteLine(string.Join(" ",foundLetters));
-                userRound--;
-                Console.WriteLine(userRound);
-                Console.WriteLine(incorrectCounter);
+                
                 if (incorrectCounter == 7) 
                 {
                     Console.WriteLine($"Game Over! The word was {secretWord}");
