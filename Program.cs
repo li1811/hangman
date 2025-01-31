@@ -8,72 +8,13 @@ namespace Hangman1
 
         public static void Main(string[] args)
         {
-            // Create instance of RandomWord class and add a word to RandomWordList
-            RandomWord randomWord = new RandomWord();
-            randomWord.PopulateList("apple");
-
-            string[] hangmanArray = {@$"
-    ___________            
-    |            
-    |            
-    |           
-    |           
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |            
-    |           
-    |           
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |           
-    |           
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |         |   
-    |           
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |        /|   
-    |           
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |        /|\   
-    |          
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |        /|\   
-    |        /     
-    |              
-=========================", @$"
-    ___________            
-    |         |    
-    |         o    
-    |        /|\   
-    |        / \   
-    |              
-========================="};
-            string message = hangmanArray[0];
+            GameThings gameThings = new GameThings();
+            Start:
+            string message = gameThings.Hangman;
 
             // Set secretWord to a word from RandomWordList
             //--string secretWord=randomWord.PickWord();
-            string secretWord=RandomWord.GetRandomWordFromStaticList();
+            string secretWord=GameThings.GetRandomWordFromStaticList();
             
             // Set secretWord to uppercase and trim whitespace
             secretWord=secretWord.ToUpper().Trim();   
@@ -82,46 +23,92 @@ namespace Hangman1
 
             //create a char array from secret word
             char[] secretWordCharArray=secretWord.ToCharArray();
-           //list for found letters
-           // - - - - - - -
-           List<char> foundLetters=new List<char>(new string('-',secretWord.Length));
-           
-            List<char> incorrectLetters=new List<char>();
-           // console out foundletters array
-           Console.WriteLine(message);
-           Console.WriteLine(string.Join(" ",foundLetters));
+            //list for found letters
+            // - - - - - - -
+            List<char> foundLetters=new List<char>(new string('-',secretWord.Length));
+            
+                List<char> incorrectLetters=new List<char>();
+            // console out foundletters array
+            
+            while(true)
+            {
+                Console.Clear();
+                Console.WriteLine(@"Welcome to Hangman!
+Select one of the options below:
+-P - Play game with preset words
 
+-M - Multiplayer, choose your own word and play with friends");
 
-           int incorrectCounter = 0;
+                char menuInput=char.ToUpper(Console.ReadKey().KeyChar);
+                switch(menuInput) 
+                {
+                case 'P':
+                    goto Game;
+                    
+                case 'M':
+                    Console.Clear();
+                    Console.WriteLine("\nEnter your secret word(make sure the person/people guessing can't see)");
+                    var input = Console.ReadLine();
+                    secretWord = input?.ToUpper() ?? string.Empty;
+                    secretWordCharArray=secretWord.ToCharArray();
+                    foundLetters=new List<char>(new string('-',secretWord.Length));
+                    goto Game;
+                
+                }                
+            }
+            Game:
+            int incorrectCounter = 0;
+            
+            while (true) 
+            {
+                
+                Console.Clear();
+                Console.WriteLine(message);
+                Console.WriteLine($"Incorrect Letters: {string.Join("", incorrectLetters)}");
+                Console.WriteLine(string.Join(" ",foundLetters));
 
-           while (true) {
+                if (incorrectCounter == 7) 
+                {
+                    Console.WriteLine($"\nGame Over! The word was {secretWord}");
+                    Console.WriteLine("Press R to restart or any other key to close program");
+                    char gameEndIndput=char.ToUpper(Console.ReadKey().KeyChar);
+                    if(gameEndIndput=='R') goto Start;
+
+                    break;
+                } 
+                else if (!foundLetters.Contains('-'))
+                {
+                    Console.WriteLine("\nYou won!");
+                    Console.WriteLine("Press R to restart or any other key to close program");
+                    char gameEndIndput=char.ToUpper(Console.ReadKey().KeyChar);
+                    if(gameEndIndput=='R') goto Start;
+
+                    break;
+                }
                 Console.WriteLine("Enter a letter");
                 char userInput=char.ToUpper(Console.ReadKey().KeyChar); // stops input when user has pressed a key
                 
-                Console.WriteLine("\nuser input is "+userInput);
-                int counter=0;
 
-                /* if (!secretWordCharArray.Contains(userInput) && !incorrectLetters.Contains(userInput) && !foundLetters.Contains(userInput))
-                {
-                        incorrectLetters.Add(userInput);
-                } */
+                
                 if (!secretWordCharArray.Contains(userInput))
                 {
                     
                     if (!incorrectLetters.Contains(userInput) && !foundLetters.Contains(userInput))
                     {
                         incorrectLetters.Add(userInput);
+                        gameThings.UpdateHangman(incorrectCounter);
+                        message = gameThings.Hangman;
                         incorrectCounter++;
-                        message = hangmanArray[incorrectCounter];
                     }
                     else if (incorrectLetters.Contains(userInput))
                     {
-                        message += $"\nTHE LETTER {userInput} HAS ALREADY BEEN GUESSED!!!";
+                        Console.WriteLine($"\nTHE LETTER {userInput} HAS ALREADY BEEN GUESSED!!!");
                     }
                 }
             
                 // to compare my char with secret word char
                 // i create a foreach loop
+                int counter=0;
                 foreach(char c in secretWordCharArray)
                 {
                     if (c==userInput)
@@ -133,23 +120,10 @@ namespace Hangman1
                     counter++;
                 }
 
-                // console out incorrect guesses
-                Console.WriteLine($"Incorrect letters: {string.Join(" ",incorrectLetters)}");
-                Console.WriteLine(message);
-                // console out foundletters array
-                Console.WriteLine(string.Join(" ",foundLetters));
                 
-                if (incorrectCounter == 7) 
-                {
-                    Console.WriteLine($"Game Over! The word was {secretWord}");
-                    break;
-                } 
-                else if (!foundLetters.Contains('-'))
-                {
-                    Console.WriteLine("You won!");
-                    break;
-                }
+                
 
+                
             }
         }
     }
