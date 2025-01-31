@@ -1,5 +1,0 @@
-To add
-1- Need a way to stop the program once all letters in the word have been guessed
-2- Display a success message when the word has been guessed correctly
-3- Show the word if attempts run out before guessing word
-4- 
