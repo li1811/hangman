@@ -10,26 +10,9 @@ namespace Hangman1
         {
             GameThings gameThings = new GameThings();
             Start:
-            string message = gameThings.Hangman;
+            string secretWord = "";
 
-            // Set secretWord to a word from RandomWordList
-            //--string secretWord=randomWord.PickWord();
-            string secretWord=GameThings.GetRandomWordFromStaticList();
-            
-            // Set secretWord to uppercase and trim whitespace
-            secretWord=secretWord.ToUpper().Trim();   
-
-            
-
-            //create a char array from secret word
-            char[] secretWordCharArray=secretWord.ToCharArray();
-            //list for found letters
-            // - - - - - - -
-            List<char> foundLetters=new List<char>(new string('-',secretWord.Length));
-            
-                List<char> incorrectLetters=new List<char>();
-            // console out foundletters array
-            
+            // While loop for main menu
             while(true)
             {
                 Console.Clear();
@@ -43,21 +26,34 @@ Select one of the options below:
                 switch(menuInput) 
                 {
                 case 'P':
+                    
+                    secretWord=GameThings.GetRandomWordFromStaticList();
                     goto Game;
                     
                 case 'M':
+                    // If multiplayer is selected we overwrite the 
                     Console.Clear();
                     Console.WriteLine("\nEnter your secret word(make sure the person/people guessing can't see)");
                     var input = Console.ReadLine();
                     secretWord = input?.ToUpper() ?? string.Empty;
-                    secretWordCharArray=secretWord.ToCharArray();
-                    foundLetters=new List<char>(new string('-',secretWord.Length));
                     goto Game;
                 
                 }                
             }
             Game:
             int incorrectCounter = 0;
+            
+            // Set starting state of hangman drawing and picks a random work from static preset list.
+            string message = gameThings.Hangman;
+            
+            // Set secretWord to uppercase and trim whitespace, then conver to character array
+            secretWord=secretWord.ToUpper().Trim();   
+            char[] secretWordCharArray=secretWord.ToCharArray();
+            
+            // Lists used to display the first letters and incorrent letters
+            List<char> foundLetters=new List<char>(new string('-',secretWord.Length));
+            List<char> incorrectLetters=new List<char>();
+            
             
             while (true) 
             {
@@ -119,11 +115,6 @@ Select one of the options below:
                     
                     counter++;
                 }
-
-                
-                
-
-                
             }
         }
     }
