@@ -31,21 +31,21 @@ Select one of the options below:
                     while(difficultySelected == false)
                     {
                         Console.Clear();
-                        Console.WriteLine(@$"Select a difficulty option:
+                        Console.WriteLine(@$"Select a length option:
 1- Short(3-6 letters)
 2- Medium(6-10 letters)
 3- Long(10+ letters)
 0- Random");
 
-                        char difficulty = char.ToUpper(Console.ReadKey().KeyChar);
-                        if (difficulty != '1' || difficulty != '2' || difficulty != '3' || difficulty != 0)
+                        char difficulty = Console.ReadKey().KeyChar;
+                        if (difficulty != '1' && difficulty != '2' && difficulty != '3' && difficulty != 0)
                         {
                             Console.Clear();
                             Console.WriteLine("Invalid input, try again");
                             Console.ReadKey();
                             continue;
                         }
-                        Console.WriteLine("Loading...");
+                        Console.WriteLine("\nLoading...");
                         secretWord = await GameThings.RandomWord(difficulty);
                         difficultySelected = true;
                     }
@@ -63,15 +63,15 @@ Select one of the options below:
             Game:
             int incorrectCounter = 0;
             
-            // Set starting state of hangman drawing and picks a random work from static preset list.
+            // Set starting state of hangman drawing
             string message = gameThings.Hangman;
             GameThings.HangmanArray = new char[7];
             
-            // Set secretWord to uppercase and trim whitespace, then conver to character array
+            // Set secretWord to uppercase and trim whitespace, then convert to character array
             secretWord=secretWord.ToUpper().Trim();   
             char[] secretWordCharArray=secretWord.ToCharArray();
             
-            // Lists used to display the first letters and incorrent letters
+            // Lists used to display the correctly guessed letters and incorrent letters
             List<char> foundLetters=new List<char>(new string('-',secretWord.Length));
             List<char> incorrectLetters=new List<char>();
             
@@ -103,7 +103,7 @@ Select one of the options below:
                     break;
                 }
                 Console.WriteLine("Enter a letter");
-                char userInput=char.ToUpper(Console.ReadKey().KeyChar); // stops input when user has pressed a key
+                char userInput=char.ToUpper(Console.ReadKey().KeyChar); 
                 
 
                 
@@ -123,8 +123,7 @@ Select one of the options below:
                     }
                 }
             
-                // to compare my char with secret word char
-                // i create a foreach loop
+                
                 int counter=0;
                 foreach(char c in secretWordCharArray)
                 {
