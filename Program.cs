@@ -32,13 +32,19 @@ Select one of the options below:
                     {
                         Console.Clear();
                         Console.WriteLine(@$"Select a difficulty option:
-1- Easy(3-6 letters)
+1- Short(3-6 letters)
 2- Medium(6-10 letters)
-3- Hard(10+ letters)
+3- Long(10+ letters)
 0- Random");
 
                         char difficulty = char.ToUpper(Console.ReadKey().KeyChar);
-                        
+                        if (difficulty != '1' || difficulty != '2' || difficulty != '3' || difficulty != 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid input, try again");
+                            Console.ReadKey();
+                            continue;
+                        }
                         Console.WriteLine("Loading...");
                         secretWord = await GameThings.RandomWord(difficulty);
                         difficultySelected = true;
@@ -46,7 +52,6 @@ Select one of the options below:
                     goto Game;
                     
                 case 'M':
-                    // If multiplayer is selected we overwrite the 
                     Console.Clear();
                     Console.WriteLine("\nEnter your secret word(make sure the person/people guessing can't see)");
                     var input = Console.ReadLine();

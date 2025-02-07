@@ -14,14 +14,6 @@ namespace Hangman1
 
         public static char[] HangmanArray{get;set;} = new char[7];
 
-        public static string GetRandomWordFromStaticList()
-        {
-            string[] predefinedWords = {"apple", "banana", "cherry", "elderberry", "pineapple",};
-            Random random = new Random();
-            int randomIndex = random.Next(predefinedWords.Length);
-            return predefinedWords[randomIndex];
-        }
-
         public string UpdateHangman(int counter)
         {
             char[] SymbolArray = ['|', 'o', '/', '|', '\\', '/', '\\'];
