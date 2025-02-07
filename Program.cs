@@ -6,7 +6,7 @@ namespace Hangman1
     internal class Program 
     {
 
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             GameThings gameThings = new GameThings();
             Start:
@@ -18,7 +18,7 @@ namespace Hangman1
                 Console.Clear();
                 Console.WriteLine(@"Welcome to Hangman!
 Select one of the options below:
--P - Play game with preset words
+-P - Play with random word(pulls a random word from internet)
 
 -M - Multiplayer, choose your own word and play with friends");
 
@@ -27,7 +27,22 @@ Select one of the options below:
                 {
                 case 'P':
                     
-                    secretWord=GameThings.GetRandomWordFromStaticList();
+                    bool difficultySelected = false;
+                    while(difficultySelected == false)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(@$"Select a difficulty option:
+1- Easy(3-6 letters)
+2- Medium(6-10 letters)
+3- Hard(10+ letters)
+0- Random");
+
+                        char difficulty = char.ToUpper(Console.ReadKey().KeyChar);
+                        
+                        Console.WriteLine("Loading...");
+                        secretWord = await GameThings.RandomWord(difficulty);
+                        difficultySelected = true;
+                    }
                     goto Game;
                     
                 case 'M':
@@ -45,6 +60,7 @@ Select one of the options below:
             
             // Set starting state of hangman drawing and picks a random work from static preset list.
             string message = gameThings.Hangman;
+            GameThings.HangmanArray = new char[7];
             
             // Set secretWord to uppercase and trim whitespace, then conver to character array
             secretWord=secretWord.ToUpper().Trim();   
@@ -93,7 +109,7 @@ Select one of the options below:
                     {
                         incorrectLetters.Add(userInput);
                         gameThings.UpdateHangman(incorrectCounter);
-                        message = gameThings.Hangman;
+                        message = gameThings.UpdateHangman(incorrectCounter);
                         incorrectCounter++;
                     }
                     else if (incorrectLetters.Contains(userInput))
