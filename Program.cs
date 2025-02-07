@@ -33,12 +33,14 @@ Select one of the options below:
                         Console.Clear();
                         Console.WriteLine(@$"Select a length option:
 1- Short(3-6 letters)
-2- Medium(6-10 letters)
-3- Long(10+ letters)
+2- Medium(6-10)
+3- Long(10-20)
+4- Very Long(20+)
 0- Random");
 
                         char difficulty = Console.ReadKey().KeyChar;
-                        if (difficulty != '1' && difficulty != '2' && difficulty != '3' && difficulty != 0)
+                        char[] options = ['1', '2', '3', '4', '0'];
+                        if (!options.Contains(difficulty))
                         {
                             Console.Clear();
                             Console.WriteLine("Invalid input, try again");

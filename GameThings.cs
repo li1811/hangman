@@ -36,7 +36,8 @@ namespace Hangman1
             {
                 '1' => r.Next(3, 7),
                 '2' => r.Next(6, 11),
-                '3' => r.Next(10, 45),
+                '3' => r.Next(10, 20),
+                '4' => r.Next(20, 45),
                 _ => r.Next(45)
             };
             string url =  $"https://random-word-api.herokuapp.com/word?length={length}"; 
